@@ -9,19 +9,20 @@ Done: 3. At least 1 character from [$#@]
 Done: 4. Minimum length of password: 6
 Done: 5. Maximum length of password: 12
 """
+
 def containsDigit(passwordList):
+    """Accepts a list of passwords and returns a sorted list of passwords where those passwords containing digits are accepted and the rest are rejected."""
     AcceptedList = []
     RejectedList = []
-    TrueFalseVar = False
+    containsDigit = False
     for password in passwordList:
-        TrueFalseVar = False
+        passwordContainsDigit = False
         for individualCharacter in password:
-             characterIsDigit = individualCharacter.isdigit()
-             if characterIsDigit == True:
-                 TrueFalseVar = True
-        if TrueFalseVar == True:
+            if individualCharacter.isdigit():
+                passwordContainsDigit = True     
+        if passwordContainsDigit: # vs. if containsDigit == True:      containsDigit (True / False)
             AcceptedList.append(password)
-        elif TrueFalseVar == False:
+        else: # elif containsDigit == False
             RejectedList.append(password)
     AcceptedRejectedList = [RejectedList, AcceptedList]
     return AcceptedRejectedList
@@ -29,15 +30,11 @@ def passLength(passwordList):
     x = containsDigit(passwordList)
     AcceptedList = x[1]
     RejectedList = x[0]
-    for password in AcceptedList:
-        passPos = 0
+    for position, password in enumerate(AcceptedList):
         if len(password) <= 5 or len(password) >= 13:
-            for position, value in enumerate(AcceptedList):
-                if value == password:
-                    passPos = position
-                    AcceptedList.pop(passPos)
-                    AcceptedList.insert(passPos, None)
-                    RejectedList.append(password)
+            AcceptedList.pop(position)
+            AcceptedList.insert(position, None)
+            RejectedList.append(password)
     AcceptedRejectedList = [RejectedList, AcceptedList]
     return AcceptedRejectedList
 def containsSpecialCharacters(passwordList): #creates the new function(problem area)
@@ -47,9 +44,8 @@ def containsSpecialCharacters(passwordList): #creates the new function(problem a
     for password in AcceptedList:
         if password == None:
             continue
-        if password.find("#") + password.find("$") + password.find("@") == -3:
-            SymbolInPass = False
-        else:
+        SymbolInPass = False
+        if password.find("#") + password.find("$") + password.find("@") != -3:
             SymbolInPass = True
         if SymbolInPass == False:
             x = AcceptedList.index(password)
@@ -66,11 +62,13 @@ def containsUpper(passwordList):
     for password in AcceptedList:
         if password == None:
             continue
-        TrueFalseVar = False
-        for individualCharacters in password:
-            if individualCharacters.isupper() == True:
-                TrueFalseVar = True
-        if TrueFalseVar != True:
+        
+        containsUpperLetter = False
+        for individualCharacter in password:
+            if individualCharacter.isupper() == True:
+                containsUpperLetter = True
+                
+        if containsUpperLetter != True:
             x = AcceptedList.index(password)
             AcceptedList.pop(x)
             AcceptedList.insert(x, None)
@@ -86,11 +84,13 @@ def containsLower(passwordList):
     for password in AcceptedList:
         if password == None:
             continue
-        TrueFalseVar = False
+        
+        containsLowerLetter = False
         for individualCharacters in password:
             if individualCharacters.islower() == True:
-                TrueFalseVar = True
-        if TrueFalseVar != True:
+                containsLowerLetter = True
+                
+        if containsLowerLetter != True:
             x = AcceptedList.index(password)
             AcceptedList.pop(x)
             AcceptedList.insert(x, None)
@@ -111,5 +111,11 @@ def websitePassword(passwordList):
 
     
 """
-websitePassword(["TestCase23$", "Jaiden", "@fhhgh5476", "$hjghjoufd", "@#f1", "Jaiden1", "TestCase87#", "Brian93", "Jaiden2019", "Jaiden#1234"])
+1. Look for logical redundancy, meaning a piece of code that is not needed. If you remove this piece of code, it should not change the behavior
+or logical meaning of your code.
+2. See how you can change variable names so that someone new to your code can quickly get an understanding of what your code is doing, without
+having to step through every line themselves. This can be very time consuming.
+3. Add a doc-string for each function explaining what the arguments are and what the output is. 
+
+websitePassword(["TestCase23$", "Jaiden", "@fhhgh5476", "$hjghjoufd", "@#f1", "Jaiden1", "TestCase87#", "Brian93", "Jaiden2019", "Jaiden#1234", "Ud3$123456789101112", "Rq1$"])
 """
